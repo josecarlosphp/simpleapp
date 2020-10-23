@@ -1,4 +1,23 @@
 {
+    "name": "josecarlosphp/simpleapp",
+    "description": "Simple PHP web application that serves as skeleton to develop several utilities.",
+    "keywords": [
+        "PHP", "web", "app", "webapp", "simple", "site"
+    ],
+    "homepage": "https://github.com/josecarlosphp/simpleapp",
+    "type": "library",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "José Carlos Cruz Parra",
+            "homepage": "https://josecarlosphp.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "josecarlosphp\\simpleapp\\": "src/"
+        }
+    },
     "require": {
         "josecarlosphp/db": "dev-master",
         "josecarlosphp/functions": "dev-master"
