@@ -1,0 +1,6 @@
+{
+    "require": {
+        "josecarlosphp/db": "dev-master",
+        "josecarlosphp/functions": "dev-master"
+    }
+}
