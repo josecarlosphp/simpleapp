@@ -21,5 +21,11 @@
     "require": {
         "josecarlosphp/db": "dev-master",
         "josecarlosphp/functions": "dev-master"
-    }
+    },
+    "require-dev": {
+        "josecarlosphp/db": "dev-master",
+        "josecarlosphp/functions": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
