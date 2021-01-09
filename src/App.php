@@ -121,6 +121,8 @@ class App
                     if ($op) {
                         $file = 'inc/ops/'.$op.'.inc.php';
                         if (is_file($file)) {
+                            global $pi_link;
+
                             $pi_link = sprintf('index.php?op=%s', $op);
 
                             include($file);
