@@ -105,6 +105,8 @@ class App
         self::Header();
 
         if (!empty($_SESSION['autenticado'])) {
+            global $db;
+
             $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
             $db->Connect() or die('ERROR: No se puede conectar<br />'.$db->Error().sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
 
