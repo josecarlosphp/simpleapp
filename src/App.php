@@ -109,10 +109,12 @@ class App
         self::Header();
 
         if (!empty($_SESSION['autenticado'])) {
-            global $db;
+            if (self::$dbhost) {
+                global $db;
 
-            $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
-            $db->Connect() or die('ERROR: No se puede conectar<br />'.$db->Error().sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
+                $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
+                $db->Connect() or die('ERROR: No se puede conectar<br />'.$db->Error().sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
+            }
 
             $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : '';
 
@@ -137,7 +139,9 @@ class App
                     break;
             }
 
-            $db->Close();
+            if (isset($db) && is_object($db)) {
+                $db->Close();
+            }
         } else {
             ?>
             <form action="index.php" method="post">
