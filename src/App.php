@@ -90,12 +90,16 @@ class App
 
         session_start();
 
-        if (isset($_POST['logout'])) {
-            unset($_SESSION['autenticado']);
-        }
+        if (self::$parola) {
+            if (isset($_POST['logout'])) {
+                unset($_SESSION['autenticado']);
+            }
 
-        if (isset($_POST['que'])) {
-            $_SESSION['autenticado'] = ($_POST['que'] == self::$parola);
+            if (isset($_POST['que'])) {
+                $_SESSION['autenticado'] = ($_POST['que'] == self::$parola);
+            }
+        } else {
+            $_SESSION['autenticado'] = true;
         }
 
         if (!empty($_GET['download']) && !empty($_SESSION['autenticado'])) {
