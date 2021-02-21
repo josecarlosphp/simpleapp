@@ -30,6 +30,8 @@ class App
     static public $dbpass = 'dbpass';
     static public $charset = 'UTF-8';
 
+    static public $defaultOp = '';
+
     static protected $name = 'SimpleApp';
 
     public function __construct($debug=false)
@@ -116,7 +118,7 @@ class App
                 $db->Connect() or die('ERROR: No se puede conectar<br />'.$db->Error().sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
             }
 
-            $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : '';
+            $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : self::$defaultOp;
 
             switch ($op) {
                 case 'logout':
