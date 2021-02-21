@@ -33,6 +33,7 @@ class App
     static public $defaultOp = '';
 
     static protected $name = 'SimpleApp';
+    static protected $icon = 'cloud';
 
     public function __construct($debug=false)
     {
@@ -196,7 +197,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
 <body>
     <nav class="navbar navbar-expand-md navbar d-print-none" id="headerbox">
         <h1 id="logobox">
-            <a href="index.php"><i class="fas fa-database"></i> <?php echo self::$name; ?></a>
+            <a href="index.php"><i class="fas fa-<?php echo self::$icon; ?>"></i> <?php echo self::$name; ?></a>
         </h1>
         <button class="navbar-toggler" type="button"  onclick="$('#navbarMain').toggle(200);">
             <span class="navbar-toggler-icon"></span>
