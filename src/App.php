@@ -119,7 +119,7 @@ class App
                 $db->Connect() or die('ERROR: No se puede conectar<br />'.$db->Error().sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
             }
 
-            $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : self::$defaultOp;
+            $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : (isset($_GET['page0']) ? str_replace('.', '', $_GET['page0']) : self::$defaultOp);
 
             switch ($op) {
                 case 'logout':
