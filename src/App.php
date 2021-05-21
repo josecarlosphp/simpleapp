@@ -238,7 +238,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
     <hr />
     <footer class="sticky-footer">
         <p class="text-center small pt-5 pb-3">
-            <strong>SimpleApp</strong> gracias a <a href="https://josecarlosphp.com" title="Programador PHP experto">josecarlosphp.com</a>
+            Funciona con <strong>SimpleApp</strong>, gracias a <a href="https://josecarlosphp.com" title="Programador PHP experto">josecarlosphp.com</a>
         </p>
     </footer>
 </body>
