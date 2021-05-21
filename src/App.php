@@ -30,6 +30,7 @@ class App
     static public $dbpass = 'dbpass';
     static public $charset = 'UTF-8';
 
+    static public $baseurl = '/';
     static public $friendlyurls = true;
 
     static public $defaultOp = '';
@@ -186,6 +187,7 @@ class App
 <!doctype html>
 <html lang="es">
 <head>
+<base href="<?php echo self::$baseurl; ?>" />
 <meta charset="utf-8">
 <title><?php echo self::$name; ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
