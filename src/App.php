@@ -30,6 +30,8 @@ class App
     static public $dbpass = 'dbpass';
     static public $charset = 'UTF-8';
 
+    static public $friendlyurls = true;
+
     static public $defaultOp = '';
 
     static protected $name = 'SimpleApp';
@@ -132,7 +134,7 @@ class App
                         if (is_file($file)) {
                             global $pi_link;
 
-                            $pi_link = sprintf('index.php?op=%s', $op);
+                            $pi_link = self::getLink($op);
 
                             include($file);
                         } else {
@@ -162,6 +164,11 @@ class App
         self::Footer();
 
         exit;
+    }
+
+    public function getLink($op=null)
+    {
+        return sprintf(self::$friendlyurls ? '%s/' : 'index.php?op=%s', $op);
     }
 
     public function debug($debug=null)
