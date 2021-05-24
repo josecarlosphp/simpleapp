@@ -80,7 +80,15 @@ class App
             require 'vendor/josecarlosphp/functions/src/internet.php';
             //require 'vendor/josecarlosphp/functions/src/arrays.php';
 
-            require 'config/config.inc.php';
+            if (!is_file('config/config.inc.php') && is_file('config/config-sample.inc.php')) {
+                copy('config/config-sample.inc.php', 'config/config.inc.php');
+            }
+
+            if (is_file('config/config.inc.php')) {
+                require 'config/config.inc.php';
+            } else {
+                die('ERROR: Missing config file.');
+            }
         }
     }
 
