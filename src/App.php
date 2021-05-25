@@ -123,12 +123,7 @@ class App
         self::Header();
 
         if (!empty($_SESSION['autenticado'])) {
-            if (self::$dbhost) {
-                global $db;
-
-                $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
-                $db->Connect() or die('ERROR: Can not connect to database<br />'.$db->Error()); //.sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
-            }
+            self::createDatabaseConnection();
 
             $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : (isset($_GET['page0']) ? str_replace('.', '', $_GET['page0']) : self::$defaultOp);
 
@@ -173,6 +168,20 @@ class App
         self::Footer();
 
         exit;
+    }
+
+    static public function createDatabaseConnection()
+    {
+        if (self::$dbhost) {
+            global $db;
+
+            $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
+            $db->Connect() or die('ERROR: Can not connect to database<br />'.$db->Error()); //.sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
+
+            return $db;
+        }
+
+        return false;
     }
 
     public function getLink($op=null)
