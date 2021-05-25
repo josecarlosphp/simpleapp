@@ -87,9 +87,15 @@ class App
             if (is_file('config/config.inc.php')) {
                 require 'config/config.inc.php';
             } else {
-                die('ERROR: Missing config file.');
+                self::die(500, 'ERROR: Missing config file.');
             }
         }
+    }
+
+    static public function die($code, $msg)
+    {
+        http_response_code($code);
+        die($msg);
     }
 
     public function run()
@@ -176,7 +182,7 @@ class App
             global $db;
 
             $db = \josecarlosphp\db\DbConnection::Factory(self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass, false, self::$charset);
-            $db->Connect() or die('ERROR: Can not connect to database<br />'.$db->Error()); //.sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
+            $db->Connect() or self::die(500, 'ERROR: Can not connect to database<br />'.$db->Error()); //.sprintf('<br /><br />dbhost = %s<br />dbport = %s<br />dbname = %s<br />dbuser = %s<br />dbpass = %s<br />', self::$dbhost, self::$dbport, self::$dbname, self::$dbuser, self::$dbpass));
 
             return $db;
         }
