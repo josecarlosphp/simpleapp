@@ -269,16 +269,20 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
             <?php
             if (self::isLoggedIn()) {
                 $currentOp = self::getCurrentOp();
-                foreach (self::getOps() as $op=>$text) {
+                $ops = self::getOps();
+                foreach ($ops as $op=>$text) {
                     printf('<li class="nav-item %s"><a class="nav-link" href="%s">%s</a></li>', $op == $currentOp ? 'active' : '', self::getLink($op), $text);
                 }
             }
             ?>
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item text-nowrap">
-                    <?php echo self::$sistema; ?>
-                </li>
+            <?php if (self::isLoggedIn()) { ?>
+                <li class="nav-item"><a class="nav-link" href="logout/">Logout</a></li>
+            <?php }
+            if (self::$sistema) { ?>
+                <li class="nav-item text-nowrap"><?php echo self::$sistema; ?></li>
+            <?php } ?>
             </ul>
         </div>
     </nav>
