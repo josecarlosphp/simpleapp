@@ -92,10 +92,16 @@ class App
         }
     }
 
+    static public function exit($code, $msg)
+    {
+        self::die($code, $msg);
+    }
+
     static public function die($code, $msg)
     {
         http_response_code($code);
-        die($msg);
+        echo $msg;
+        exit;
     }
 
     public function run()
