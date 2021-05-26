@@ -128,18 +128,18 @@ class App
             $_SESSION['autenticado'] = true;
         }
 
-        if (!empty($_GET['download']) && !empty($_SESSION['autenticado'])) {
+        if (!empty($_GET['download']) && self::isLoggedIn()) {
             self::DescargarArchivo($_GET['download']);
         }
 
         self::Header();
 
-        if (!empty($_SESSION['autenticado'])) {
+        if (self::isLoggedIn()) {
             global $db;
 
             $db = self::createDatabaseConnection();
 
-            $op = isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : (isset($_GET['page0']) ? str_replace('.', '', $_GET['page0']) : self::$defaultOp);
+            $op = self::getCurrentOp();
 
             switch ($op) {
                 case 'logout':
@@ -182,6 +182,30 @@ class App
         self::Footer();
 
         exit;
+    }
+
+    static public function isLoggedIn()
+    {
+        return !empty($_SESSION['autenticado']);
+    }
+
+    static public function getCurrentOp()
+    {
+        return isset($_GET['op']) ? str_replace('.', '', $_GET['op']) : (isset($_GET['page0']) ? str_replace('.', '', $_GET['page0']) : self::$defaultOp);
+    }
+
+    static public function getOps()
+    {
+        $ops = array();
+        $files = getFilesExt('inc/ops', array('php'));
+        sort($files);
+        foreach ($files as $file) {
+            if (substr($file, -8) == '.inc.php') {
+                $ops[substr($file, 0, -8)] = ucfirst(substr($file, 0, -8));
+            }
+        }
+
+        return $ops;
     }
 
     static public function createDatabaseConnection()
@@ -237,12 +261,19 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
         <h1 id="logobox">
             <a href="<?php echo self::$baseurl; ?>"><i class="fas fa-<?php echo self::$icon; ?>"></i> <?php echo self::$name; ?></a>
         </h1>
-        <button class="navbar-toggler" type="button"  onclick="$('#navbarMain').toggle(200);">
-            <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" onclick="$('#navbarMain').toggle(200);">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav mr-auto menu">
-                <!-- //TODO: Menú -->
+            <ul class="navbar-nav m-auto menu">
+            <?php
+            if (self::isLoggedIn()) {
+                $currentOp = self::getCurrentOp();
+                foreach (self::getOps() as $op=>$text) {
+                    printf('<li class="nav-item %s"><a class="nav-link" href="%s/">%s</a></li>', $op == $currentOp ? 'active' : '', $op, $text);
+                }
+            }
+            ?>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item text-nowrap">
