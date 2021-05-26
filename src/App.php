@@ -220,7 +220,7 @@ class App
         return false;
     }
 
-    public function getLink($op=null)
+    static public function getLink($op=null)
     {
         return sprintf(self::$friendlyurls ? '%s/' : 'index.php?op=%s', $op);
     }
