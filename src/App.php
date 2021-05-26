@@ -167,7 +167,7 @@ class App
             }
         } else {
             ?>
-            <form action="index.php" method="post">
+            <form action="<?php echo self::$baseurl; ?>" method="post">
                 <table class="table table-lg">
                     <tr>
                         <td class="text-right h3">Login</td>
