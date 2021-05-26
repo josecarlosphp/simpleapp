@@ -235,7 +235,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
 <body>
     <nav class="navbar navbar-expand-md navbar d-print-none" id="headerbox">
         <h1 id="logobox">
-            <a href="index.php"><i class="fas fa-<?php echo self::$icon; ?>"></i> <?php echo self::$name; ?></a>
+            <a href="<?php echo self::$baseurl; ?>"><i class="fas fa-<?php echo self::$icon; ?>"></i> <?php echo self::$name; ?></a>
         </h1>
         <button class="navbar-toggler" type="button"  onclick="$('#navbarMain').toggle(200);">
             <span class="navbar-toggler-icon"></span>
