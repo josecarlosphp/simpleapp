@@ -236,6 +236,7 @@ class App
 
     static public function Header()
     {
+        ob_start();
         ?>
 <!doctype html>
 <html lang="es">
@@ -308,6 +309,8 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
 </body>
 </html>
         <?php
+
+        ob_end_flush();
     }
 
     static public function Msg($str, $class='')
