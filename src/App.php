@@ -360,7 +360,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
     {
         if(self::IsDownloadable($file))
         {
-            if(self::$headerDone || headers_sent())
+            if(/*self::$headerDone || */headers_sent())
             {
                 global $pi_link;
 
@@ -368,6 +368,8 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
             }
             else
             {
+                ob_end_clean();
+
                 switch(getExtension($file))
                 {
                     case 'pdf':
