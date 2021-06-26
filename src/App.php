@@ -429,7 +429,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
     {
         if(is_file($file) && is_readable($file))
         {
-            if(in_array(getExtension($file), array('zip', 'sql', 'txt')))
+            if(in_array(getExtension($file), array('zip', 'sql', 'txt', 'csv')))
             {
                 return true;
             }
