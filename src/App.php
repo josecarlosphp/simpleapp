@@ -547,184 +547,221 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
         return '';
     }
 
+    static public function GetSistemas()
+    {
+        return array(
+            'PrestaShop 1.7 o superior' => '../app/config/parameters.php',
+            'PrestaShop anterior a 1.7' => '../config/settings.inc.php',
+            'WordPress' => '../wp-config.php',
+            'Simple web PHP (EA)' => '../config/config-SWPHP.inc.php',
+            'Simple web PHP (realmente simple)' => '../inc/config.inc.php',
+            'Joomla' => '../configuration.php',
+            'WHMCS' => '../configuration.php',
+            'Merkagest' => '../merkagest/bd.cfg',
+            'Internia CMS' => '../definedirs.php',
+            'Adays' => '../Connections/adayss.php',
+            'PT' => '../php/bd/DataBase.plib',
+        );
+    }
+
     static public function AutoConfig()
     {
-        if(self::$sistema == 'auto')
-        {
+        if (self::$sistema == 'auto') {
+            foreach (array_keys(self::GetSistemas()) as $sistema) {
+                if (self::Config($sistema)) {
+                    self::$sistema = $sistema;
+
+                    return true;
+                }
+            }
+
             self::$sistema = 'Desconocido';
-
-            $cfg17 = '../app/config/parameters.php';
-            $cfgPS = '../config/settings.inc.php';
-            $cfgWP = '../wp-config.php';
-            $cfgSW = '../config/config-SWPHP.inc.php';
-            $cfgSS = '../inc/config.inc.php';
-            $cfgJL = '../configuration.php';
-            $cfgWH = '../configuration.php';
-            $cfgMG = '../merkagest/bd.cfg';
-            $cfgIC = '../definedirs.php';
-            $cfgAD = '../Connections/adayss.php';
-            $cfgPT = '../php/bd/DataBase.plib';
-
-            if(is_file($cfg17))
-            {
-                self::$sistema = 'PrestaShop 1.7 o superior';
-
-                $config = include_once($cfg17);
-
-                self::$dbhost = $config['parameters']['database_host'];
-                self::$dbport = $config['parameters']['database_port'];
-                self::$dbname = $config['parameters']['database_name'];
-                self::$dbuser = $config['parameters']['database_user'];
-                self::$dbpass = $config['parameters']['database_password'];
-                self::$charset = 'UTF-8';
-            }
-            elseif(is_file($cfgPS))
-            {
-                self::$sistema = 'PrestaShop anterior a 1.7';
-
-                include_once($cfgPS);
-
-                self::$dbhost = _DB_SERVER_;
-                self::$dbport = 3306;
-                self::$dbname = _DB_NAME_;
-                self::$dbuser = _DB_USER_;
-                self::$dbpass = _DB_PASSWD_;
-                self::$charset = 'UTF-8';
-            }
-            elseif(is_file($cfgWP))
-            {
-                self::$sistema = 'WordPress';
-
-                include_once($cfgWP);
-
-                self::$dbhost = DB_HOST;
-                self::$dbport = 3306;
-                self::$dbname = DB_NAME;
-                self::$dbuser = DB_USER;
-                self::$dbpass = DB_PASSWORD;
-                self::$charset = DB_CHARSET;
-            }
-            elseif(is_file($cfgSW))
-            {
-                self::$sistema = 'Simple web PHP (EA)';
-
-                include_once($cfgSW);
-
-                self::$dbhost = SWPHP_DBHOST;
-                self::$dbport = SWPHP_DBPORT;
-                self::$dbname = SWPHP_DBNAME;
-                self::$dbuser = SWPHP_DBUSER;
-                self::$dbpass = SWPHP_DBPASS;
-                self::$charset = 'UTF-8';
-            }
-            elseif(is_file($cfgSS))
-            {
-                self::$sistema = 'Simple web PHP (realmente simple)';
-
-                function t($str){return $str;}
-
-                include_once($cfgSS);
-
-                self::$dbhost = $config['dbhost'];
-                self::$dbport = $config['dbport'];
-                self::$dbname = $config['dbname'];
-                self::$dbuser = $config['dbuser'];
-                self::$dbpass = $config['dbpass'];
-                self::$charset = defined('INMO_DOMINIO') ? 'ISO-8859-1' : 'UTF-8';
-            }
-            elseif(is_file($cfgJL))
-            {
-                include_once($cfgJL);
-
-                if (class_exists('JConfig')) {
-                    self::$sistema = 'Joomla';
-
-                    $jconfig = new JConfig();
-
-                    self::$dbhost = $jconfig->host;
-                    self::$dbport = 3306;
-                    self::$dbname = $jconfig->db;
-                    self::$dbuser = $jconfig->user;
-                    self::$dbpass = $jconfig->password;
-                    self::$charset = 'UTF-8';
-                }
-            }
-            elseif(is_file($cfgWH))
-            {
-                include_once($cfgWH);
-
-                if (!empty($db_host)) {
-                    self::$sistema = 'WHMCS';
-
-                    self::$dbhost = $db_host;
-                    self::$dbport = 3306;
-                    self::$dbname = $db_name;
-                    self::$dbuser = $db_username;
-                    self::$dbpass = $db_password;
-                    self::$charset = 'UTF-8'; //$mysql_charset
-                }
-            }
-            elseif(is_file($cfgMG))
-            {
-                self::$sistema = 'Merkagest';
-
-                include_once($cfgMG);
-
-                self::$dbhost = CFG_BD_Server;
-                self::$dbport = 3306;
-                self::$dbname = CFG_BD_BD;
-                self::$dbuser = CFG_BD_User;
-                self::$dbpass = CFG_BD_Pass;
-                self::$charset = UTF8_ACTIVO ? 'UTF-8' : 'ISO-8859-1';
-            }
-            elseif(is_file($cfgIC))
-            {
-                self::$sistema = 'Internia CMS';
-
-                include_once($cfgIC);
-                $cwd = getcwd();
-                chdir('..');
-                include_once(FILES_DIR.'configs/config.php');
-                chdir($cwd);
-
-                self::$dbhost = DBHOST;
-                self::$dbport = DBPORT;
-                self::$dbname = DBNAME;
-                self::$dbuser = DBUSER;
-                self::$dbpass = DBPASS;
-                self::$charset = 'ISO-8859-1';
-            }
-            elseif(is_file($cfgAD))
-            {
-                self::$sistema = 'Adays';
-
-                include_once($cfgAD);
-
-                self::$dbhost = $hostname_adayss;
-                self::$dbport = 3306;
-                self::$dbname = $database_adayss;
-                self::$dbuser = $username_adayss;
-                self::$dbpass = $password_adayss;
-            }
-            elseif(is_file($cfgPT))
-            {
-                self::$sistema = 'PT';
-
-                include_once($cfgPT);
-
-                $dataBase = new DataBase();
-                self::$dbhost = $dataBase->host;
-                self::$dbport = 3306;
-                self::$dbname = $dataBase->nombre;
-                self::$dbuser = $dataBase->usuario;
-                self::$dbpass = $dataBase->password;
-                unset($dataBase);
-            }
         }
 
-        if(self::$charset == 'utf8')
-        {
+        if (self::$charset == 'utf8') {
             self::$charset = 'UTF-8';
         }
+
+        return false;
+    }
+
+    static protected function Config($sistema)
+    {
+        $sistemas = self::GetSistemas();
+
+        if (array_key_exists($sistema, $sistemas)) {
+            $cfgfile = $sistemas[$sistema];
+
+            switch ($sistema) {
+                case 'PrestaShop 1.7 o superior':
+                    if (is_file($cfgfile)) {
+                        $config = include_once($cfgfile);
+
+                        self::$dbhost = $config['parameters']['database_host'];
+                        self::$dbport = $config['parameters']['database_port'];
+                        self::$dbname = $config['parameters']['database_name'];
+                        self::$dbuser = $config['parameters']['database_user'];
+                        self::$dbpass = $config['parameters']['database_password'];
+                        self::$charset = 'UTF-8';
+
+                        return true;
+                    }
+                    break;
+                case 'PrestaShop anterior a 1.7':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        self::$dbhost = _DB_SERVER_;
+                        self::$dbport = 3306;
+                        self::$dbname = _DB_NAME_;
+                        self::$dbuser = _DB_USER_;
+                        self::$dbpass = _DB_PASSWD_;
+                        self::$charset = 'UTF-8';
+
+                        return true;
+                    }
+                    break;
+                case 'WordPress':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        self::$dbhost = DB_HOST;
+                        self::$dbport = 3306;
+                        self::$dbname = DB_NAME;
+                        self::$dbuser = DB_USER;
+                        self::$dbpass = DB_PASSWORD;
+                        self::$charset = DB_CHARSET;
+
+                        return true;
+                    }
+                    break;
+                case 'Simple web PHP (EA)':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        self::$dbhost = SWPHP_DBHOST;
+                        self::$dbport = SWPHP_DBPORT;
+                        self::$dbname = SWPHP_DBNAME;
+                        self::$dbuser = SWPHP_DBUSER;
+                        self::$dbpass = SWPHP_DBPASS;
+                        self::$charset = 'UTF-8';
+
+                        return true;
+                    }
+                    break;
+                case 'Simple web PHP (realmente simple)':
+                    if (is_file($cfgfile)) {
+                        function t($str){return $str;}
+
+                        include_once($cfgfile);
+
+                        self::$dbhost = $config['dbhost'];
+                        self::$dbport = $config['dbport'];
+                        self::$dbname = $config['dbname'];
+                        self::$dbuser = $config['dbuser'];
+                        self::$dbpass = $config['dbpass'];
+                        self::$charset = defined('INMO_DOMINIO') ? 'ISO-8859-1' : 'UTF-8';
+
+                        return true;
+                    }
+                    break;
+                case 'Joomla':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        if (class_exists('JConfig')) {
+                            $jconfig = new JConfig();
+
+                            self::$dbhost = $jconfig->host;
+                            self::$dbport = 3306;
+                            self::$dbname = $jconfig->db;
+                            self::$dbuser = $jconfig->user;
+                            self::$dbpass = $jconfig->password;
+                            self::$charset = 'UTF-8';
+
+                            return true;
+                        }
+                    }
+                    break;
+                case 'WHMCS':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        if (!empty($db_host)) {
+                            self::$dbhost = $db_host;
+                            self::$dbport = 3306;
+                            self::$dbname = $db_name;
+                            self::$dbuser = $db_username;
+                            self::$dbpass = $db_password;
+                            self::$charset = 'UTF-8'; //$mysql_charset
+
+                            return true;
+                        }
+                    }
+                    break;
+                case 'Merkagest':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        self::$dbhost = CFG_BD_Server;
+                        self::$dbport = 3306;
+                        self::$dbname = CFG_BD_BD;
+                        self::$dbuser = CFG_BD_User;
+                        self::$dbpass = CFG_BD_Pass;
+                        self::$charset = UTF8_ACTIVO ? 'UTF-8' : 'ISO-8859-1';
+
+                        return true;
+                    }
+                    break;
+                case 'Internia CMS':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+                        $cwd = getcwd();
+                        chdir('..');
+                        include_once(FILES_DIR.'configs/config.php');
+                        chdir($cwd);
+
+                        self::$dbhost = DBHOST;
+                        self::$dbport = DBPORT;
+                        self::$dbname = DBNAME;
+                        self::$dbuser = DBUSER;
+                        self::$dbpass = DBPASS;
+                        self::$charset = 'ISO-8859-1';
+
+                        return true;
+                    }
+                    break;
+                case 'Adays':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        self::$dbhost = $hostname_adayss;
+                        self::$dbport = 3306;
+                        self::$dbname = $database_adayss;
+                        self::$dbuser = $username_adayss;
+                        self::$dbpass = $password_adayss;
+
+                        return true;
+                    }
+                    break;
+                case 'PT':
+                    if (is_file($cfgfile)) {
+                        include_once($cfgfile);
+
+                        $dataBase = new DataBase();
+                        self::$dbhost = $dataBase->host;
+                        self::$dbport = 3306;
+                        self::$dbname = $dataBase->nombre;
+                        self::$dbuser = $dataBase->usuario;
+                        self::$dbpass = $dataBase->password;
+                        unset($dataBase);
+
+                        return true;
+                    }
+                    break;
+            }
+        }
+
+        return false;
     }
 }
