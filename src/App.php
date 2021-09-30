@@ -559,6 +559,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
             $cfgSW = '../config/config-SWPHP.inc.php';
             $cfgSS = '../inc/config.inc.php';
             $cfgJL = '../configuration.php';
+            $cfgWH = '../configuration.php';
             $cfgMG = '../merkagest/bd.cfg';
             $cfgIC = '../definedirs.php';
             $cfgAD = '../Connections/adayss.php';
@@ -633,18 +634,35 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
             }
             elseif(is_file($cfgJL))
             {
-                self::$sistema = 'Joomla';
-
                 include_once($cfgJL);
 
-                $jconfig = new JConfig();
+                if (class_exists('JConfig')) {
+                    self::$sistema = 'Joomla';
 
-                self::$dbhost = $jconfig->host;
-                self::$dbport = 3306;
-                self::$dbname = $jconfig->db;
-                self::$dbuser = $jconfig->user;
-                self::$dbpass = $jconfig->password;
-                self::$charset = 'UTF-8';
+                    $jconfig = new JConfig();
+
+                    self::$dbhost = $jconfig->host;
+                    self::$dbport = 3306;
+                    self::$dbname = $jconfig->db;
+                    self::$dbuser = $jconfig->user;
+                    self::$dbpass = $jconfig->password;
+                    self::$charset = 'UTF-8';
+                }
+            }
+            elseif(is_file($cfgWH))
+            {
+                include_once($cfgWH);
+
+                if (!empty($db_host)) {
+                    self::$sistema = 'WHMCS';
+
+                    self::$dbhost = $db_host;
+                    self::$dbport = 3306;
+                    self::$dbname = $db_name;
+                    self::$dbuser = $db_username;
+                    self::$dbpass = $db_password;
+                    self::$charset = 'UTF-8'; //$mysql_charset
+                }
             }
             elseif(is_file($cfgMG))
             {
