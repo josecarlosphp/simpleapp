@@ -721,12 +721,12 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
                         include_once(FILES_DIR.'configs/config.php');
                         chdir($cwd);
 
-                        self::$dbhost = DBHOST;
-                        self::$dbport = DBPORT;
-                        self::$dbname = DBNAME;
-                        self::$dbuser = DBUSER;
-                        self::$dbpass = DBPASS;
-                        self::$charset = 'ISO-8859-1';
+                        self::$dbhost = defined('DBHOST') ? 'DBHOST' : $dbhost;
+                        self::$dbport = defined('DBPORT') ? 'DBPORT' : $dbport;
+                        self::$dbname = defined('DBNAME') ? 'DBNAME' : $dbname;
+                        self::$dbuser = defined('DBUSER') ? 'DBUSER' : $dbuser;
+                        self::$dbpass = defined('DBPASS') ? 'DBPASS' : $dbpass;
+                        self::$charset = defined('MY_CHARSET') ? MY_CHARSET : 'ISO-8859-1';
 
                         return true;
                     }
