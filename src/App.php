@@ -442,7 +442,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
 
     static public function HtmlEntities($str)
     {
-       return htmlentities($str, PI_FLAGS_HTML, PI_ENCODING);
+        return is_string($str) ? htmlentities($str, PI_FLAGS_HTML, PI_ENCODING) : $str;
     }
 
     static public function HtmlEntityDecode($str)
