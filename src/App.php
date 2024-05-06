@@ -282,7 +282,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
                 <li class="nav-item"><a class="nav-link" href="logout/">Logout</a></li>
             <?php }
             if (self::$sistema) { ?>
-                <li class="nav-item text-nowrap"><?php echo self::$sistema; ?></li>
+                <li class="nav-item text-nowrap"><span class="nav-link"><?php echo self::$sistema; ?></span></li>
             <?php } ?>
             </ul>
         </div>
