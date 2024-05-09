@@ -40,7 +40,7 @@ class App
 
     public function __construct($debug=false)
     {
-        self::init();
+        static::init();
 
         $this->debug($debug);
     }
@@ -112,7 +112,7 @@ class App
             $app = $this; //Por si la variable se ha declarado con otro nombre
         }
 
-        self::AutoConfig();
+        static::AutoConfig();
 
         session_start();
 
@@ -159,7 +159,7 @@ class App
             self::DescargarArchivo($_GET['download']);
         }
 
-        self::Header();
+        static::Header();
 
         if (self::isLoggedIn()) {
             global $db;
@@ -204,7 +204,7 @@ class App
             <?php
         }
 
-        self::Footer();
+        static::Footer();
 
         exit;
     }
