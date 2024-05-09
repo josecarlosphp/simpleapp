@@ -128,6 +128,33 @@ class App
             $_SESSION['autenticado'] = true;
         }
 
+        $op = self::getCurrentOp();
+
+        if (!empty($_GET['ajax'])) {
+            if ($op) {
+                $file = 'inc/ajax/' . $op . '.ajax.php';
+                if (is_file($file)) {
+                    ob_start();
+
+                    include 'inc/classes/MyAjaxResponse.class.php';
+                    include $file;
+
+                    $f = 'ajax_' . $_GET['ajax'];
+                    if (function_exists($f)) {
+                        $response = $f($_POST);
+                    } else {
+                        $response = new \MyAjaxResponse();
+                        $response->Result('ERROR');
+                        $response->Description('Función ajax no encontrada');
+                    }
+
+                    $response->Ob(ob_get_clean());
+
+                    die($response->Get());
+                }
+            }
+        }
+
         if (!empty($_GET['download']) && self::isLoggedIn()) {
             self::DescargarArchivo($_GET['download']);
         }
@@ -138,8 +165,6 @@ class App
             global $db;
 
             $db = self::createDatabaseConnection();
-
-            $op = self::getCurrentOp();
 
             switch ($op) {
                 case 'logout':
@@ -250,8 +275,9 @@ class App
 <link rel="icon" href="favicon.ico" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous" media="all" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" media="all">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/SimpleApp.js"></script>
 <script type="text/javascript" src="js/Validador.js"></script>
 <script type="text/javascript">
 var validador = new Validador();
