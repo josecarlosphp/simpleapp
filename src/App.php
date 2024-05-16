@@ -226,7 +226,7 @@ class App
         sort($files);
         foreach ($files as $file) {
             if (substr($file, -8) == '.inc.php') {
-                $ops[substr($file, 0, -8)] = ucfirst(substr($file, 0, -8));
+                $ops[substr($file, 0, -8)] = str_replace(array('-', '_'), ' ', ucfirst(substr($file, 0, -8)));
             }
         }
 
