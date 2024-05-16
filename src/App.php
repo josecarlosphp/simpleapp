@@ -116,7 +116,9 @@ class App
 
         session_start();
 
-        if (self::$parola) {
+        if (self::$parola === false) {
+            $_SESSION['autenticado'] = true;
+        } else {
             if (isset($_POST['logout'])) {
                 unset($_SESSION['autenticado']);
             }
@@ -124,8 +126,6 @@ class App
             if (isset($_POST['que'])) {
                 $_SESSION['autenticado'] = ($_POST['que'] == self::$parola);
             }
-        } else {
-            $_SESSION['autenticado'] = true;
         }
 
         $op = self::getCurrentOp();
