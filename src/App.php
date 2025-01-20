@@ -305,7 +305,7 @@ validador.cfgFormatoDeFecha = 'yyyy-mm-dd';
             ?>
             </ul>
             <ul class="navbar-nav">
-            <?php if (self::isLoggedIn()) { ?>
+            <?php if (self::isLoggedIn() && self::$parola !== false) { ?>
                 <li class="nav-item"><a class="btn btn-danger" href="logout/">Logout</a></li>
             <?php }
             if (self::$sistema) { ?>
